@@ -11,7 +11,8 @@ fn panic(_info: &PanicInfo) -> ! {
     unsafe { intrinsics::abort() }
 }
 
-// bootimage build --target=myos.json
+// bootimage build
+// cargo xbuild
 #[no_mangle]
 pub fn _start() -> ! {
     loop {}
