@@ -11,9 +11,20 @@ fn panic(_info: &PanicInfo) -> ! {
     unsafe { intrinsics::abort() }
 }
 
-// bootimage build
-// cargo xbuild
+static HELLO: &[u8] = b"Oh Yeah! This is MyOS :)";
+
+// cargo bootimage
+// qemu-system-x86_64 -drive format=raw,file=target/x86_64-myos/debug/bootimage-myos.bin
 #[no_mangle]
-pub fn _start() -> ! {
+pub extern "C" fn _start() -> ! {
+    let vga_buffer = 0xb8000 as *mut u8;
+
+    for (i, &byte) in HELLO.iter().enumerate() {
+        unsafe {
+            *vga_buffer.offset(i as isize * 2) = byte;
+            *vga_buffer.offset(i as isize * 2 + 1) = 0xb; // light cyan
+        }
+    }
+
     loop {}
 }
