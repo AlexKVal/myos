@@ -13,8 +13,7 @@ fn panic(_info: &PanicInfo) -> ! {
 
 static HELLO: &[u8] = b"Oh Yeah! This is MyOS :)";
 
-// cargo bootimage
-// qemu-system-x86_64 -drive format=raw,file=target/x86_64-myos/debug/bootimage-myos.bin
+// cargo xrun
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     let vga_buffer = 0xb8000 as *mut u8;
