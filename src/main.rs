@@ -5,6 +5,8 @@
 use core::intrinsics;
 use core::panic::PanicInfo;
 
+mod vga_buffer;
+
 #[panic_handler]
 #[no_mangle]
 fn panic(_info: &PanicInfo) -> ! {
