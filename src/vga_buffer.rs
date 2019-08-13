@@ -44,3 +44,34 @@ const BUFFER_WIDTH: usize = 80;
 struct Buffer {
     chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT]
 }
+
+pub struct Writer {
+    column_position: usize, // keeps the current position in the last row
+    color_code: ColorCode, // keeps the last color
+    buffer: &'static mut Buffer, // the Buffer has the static lifetime
+}
+
+impl Writer {
+    pub fn write_byte(&mut self, byte: u8) {
+        match byte {
+            b'\n' => self.new_line(),
+            byte => {
+                if self.column_position >= BUFFER_WIDTH {
+                    self.new_line();
+                }
+
+                let row = BUFFER_HEIGHT - 1; // always write to the last line
+                let col = self.column_position;
+
+                let color_code = self.color_code;
+                self.buffer.chars[row][col] = ScreenChar {
+                    ascii_character: byte,
+                    color_code,
+                };
+                self.column_position += 1;
+            }
+        }
+    }
+
+    fn new_line(&mut self) {/* TODO */}
+}
