@@ -1,22 +1,23 @@
-#![feature(core_intrinsics)]
 #![no_std]
 #![no_main]
 
-use core::intrinsics;
-use core::panic::PanicInfo;
-
 mod vga_buffer;
+
+use core::panic::PanicInfo;
 
 #[panic_handler]
 #[no_mangle]
-fn panic(_info: &PanicInfo) -> ! {
-    unsafe { intrinsics::abort() }
+fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
+    loop {}
 }
 
 // cargo xrun
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello world{}", "!");
+
+    panic!("Some panic message");
 
     loop {}
 }
